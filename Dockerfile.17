@@ -1,13 +1,20 @@
 FROM postgres:17
 
-# Install OpenSSL and sudo
-RUN apt-get update && apt-get install -y openssl sudo
+# Install OpenSSL, sudo, and pgvector build dependencies
+RUN apt-get update && apt-get install -y openssl sudo build-essential git postgresql-server-dev-17
+
+# Install pgvector
+RUN git clone --branch v0.8.0 https://github.com/pgvector/pgvector.git /pgvector
+WORKDIR /pgvector
+RUN make && make install
+WORKDIR /
 
 # Allow the postgres user to execute certain commands as root without a password
 RUN echo "postgres ALL=(root) NOPASSWD: /usr/bin/mkdir, /bin/chown, /usr/bin/openssl" > /etc/sudoers.d/postgres
 
 # Add init scripts while setting permissions
 COPY --chmod=755 init-ssl.sh /docker-entrypoint-initdb.d/init-ssl.sh
+COPY --chmod=755 init-pgvector.sh /docker-entrypoint-initdb.d/init-pgvector.sh
 COPY --chmod=755 wrapper.sh /usr/local/bin/wrapper.sh
 
 ENTRYPOINT ["wrapper.sh"]

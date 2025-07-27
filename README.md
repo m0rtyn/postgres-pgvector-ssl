@@ -1,20 +1,20 @@
-# SSL-enabled Postgres DB image
+# SSL-enabled Postgres DB image with pgvector
 
-This repository contains the logic to build SSL-enabled Postgres images.
+This repository contains the logic to build SSL-enabled Postgres images with the `pgvector` extension.
 
 By default, when you deploy Postgres from the official Postgres template on Railway, the image that is used is built from this repository!
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/postgres)
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/postgres-pgvector)
 
 ### Why though?
 
-The official Postgres image in Docker hub does not come with SSL baked in.
+The official Postgres image in Docker hub does not come with SSL or `pgvector` baked in.
 
-Since this could pose a problem for applications or services attempting to connect to Postgres services, we decided to roll our own Postgres image with SSL enabled right out of the box.
+Since this could pose a problem for applications or services attempting to connect to Postgres services, we decided to roll our own Postgres image with SSL enabled and `pgvector` installed right out of the box.
 
 ### How does it work?
 
-The Dockerfiles contained in this repository start with the official Postgres image as base.  Then the `init-ssl.sh` script is copied into the `docker-entrypoint-initdb.d/` directory to be executed upon initialization.
+The Dockerfiles contained in this repository start with the official Postgres image as base. Then, we install `pgvector`. Finally, the `init-ssl.sh` and `init-pgvector.sh` scripts are copied into the `docker-entrypoint-initdb.d/` directory to be executed upon initialization.
 
 ### Certificate expiry
 By default, the cert expiry is set to 820 days. You can control this by configuring the `SSL_CERT_DAYS` environment variable as needed.
