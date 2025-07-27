@@ -13,12 +13,11 @@ jobs:
 
     strategy:
       matrix:
-        dockerfile:
-          [
-            "Dockerfile.13",
-            "Dockerfile.14",
-            "Dockerfile.15",
-            "Dockerfile.16",
+        dockerfile: [
+            # "Dockerfile.13",
+            # "Dockerfile.14",
+            # "Dockerfile.15",
+            # "Dockerfile.16",
             "Dockerfile.17",
           ]
 
